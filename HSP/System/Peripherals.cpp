@@ -36,7 +36,6 @@ I2C *Peripherals::mI2c2 = NULL;
 MAX30101 *Peripherals::mMAX30101 = NULL;
 LIS2DH *Peripherals::mLIS2DH = NULL;
 Timer *Peripherals::mTimestampTimer = NULL;
-PushButton *Peripherals::mPushButton = NULL;
 BLE *Peripherals::mBLE = NULL;
 MAX14720 *Peripherals::mMAX14720 = NULL;
 HspBLE *Peripherals::mhspBLE = NULL;

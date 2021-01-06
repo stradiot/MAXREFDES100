@@ -88,14 +88,23 @@ void HspBLE::_onDataWritten(int index) {
 void HspBLE::onDataWritten(int index) {
   int length;
   uint8_t *data;
-  printf("onDataWritten ");
+  
   if (index == CHARACTERISTIC_CMD) {
     data = bluetoothLE->getDataWritten(index, &length);
-    if (length >= 1) {
-        	if (data[0] == 0x00) startDataLogging = false;
-        	if (data[0] == 0x01) startDataLogging = true;
-        	printf("onDataWritten index %d, data %02X, length %d ",index,data[0],length); fflush(stdout);
-
+    if (length == 1) {
+	  if (data[0] == 0x00) {
+		  printf("00 received\n");
+		  Peripherals::max30101()->HRmode_stop();
+	  }
+	  else if (data[0] == 0x01) {
+	    printf("01 received\n");
+		Peripherals::max30101()->HRmode_init(0, 0, 1, 3, 32);
+	  }
+	  else {
+		printf("unknown command %d received\n", data[0]);    		
+      }
+	  printf("onDataWritten index %d, data %02X, length %d \n",index,data[0],length); 
+	  fflush(stdout);
     }
   }
 }
@@ -113,8 +122,6 @@ void HspBLE::pollSensor(int sensorId, uint8_t *data) {
         data[i] = bytePtr[i];    
     } break;
     case CHARACTERISTIC_HEARTRATE: {
-      unsigned int i;
-
       int8_t heartrate;
       Peripherals::max30101()->ReadHeartrateData(&heartrate);
       data[0] = heartrate;

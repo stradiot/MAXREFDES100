@@ -35,8 +35,6 @@
 #include "MAX30101.h"
 #include "LIS2DH.h"
 #include "Peripherals.h"
-#include "MAX30101_helper.h"
-#include "PushButton.h"
 #include "BLE.h"
 #include "HspBLE.h"
 
@@ -63,11 +61,10 @@ InterruptIn lis2dh_Interrupt(P4_7);
 MAX14720 max14720(&i2c2, MAX14720_I2C_SLAVE_ADDR);
 /// Optical Oximeter
 MAX30101 max30101(&i2c2, MAX30101_I2C_SLAVE_ADDR);
+void MAX30101_OnInterrupt(void) { I2CM_Init_Reset(2, 1); }
 InterruptIn max30101_Interrupt(P4_0);
 /// Packet TimeStamp Timer, set for 1uS
 Timer timestampTimer;
-/// HSP Platform push button
-PushButton pushButton(SW1);
 
 /// BLE instance
 static BLE ble;
@@ -108,7 +105,6 @@ int main() {
   Peripherals::setTimestampTimer(&timestampTimer);
   Peripherals::setMAX30101(&max30101);
   Peripherals::setI2c2(&i2c2);
-  Peripherals::setPushButton(&pushButton);
   Peripherals::setBLE(&ble);
   Peripherals::setMAX14720(&max14720);
   Peripherals::setHspBLE(&hspBLE);
@@ -135,7 +131,6 @@ int main() {
   printf("Start main loop...\n");
   fflush(stdout);
   
-  max30101.HRmode_init(0, 0, 1, 3, 32);
   lis2dh.initStart(5, 8);
   
   while (1)

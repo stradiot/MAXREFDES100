@@ -36,7 +36,6 @@
 #include "mbed.h"
 #include "MAX30101.h"
 #include "LIS2DH.h"
-#include "PushButton.h"
 #include "BLE.h"
 #include "MAX14720.h"
 #include "HspBLE.h"
@@ -60,9 +59,6 @@ public:
     static I2C *i2c2(void) { return mI2c2; }
     static I2C *setI2c2(I2C *i2cPort) { mI2c2 = i2cPort; return i2cPort; }
 
-    static PushButton *pushButton(void) { return mPushButton; }
-    static PushButton *setPushButton(PushButton *pushButton) { mPushButton = pushButton; return pushButton; }
-
     static BLE *ble(void) { return mBLE; }
     static BLE *setBLE(BLE *_ble) { mBLE = _ble; return _ble; }
 
@@ -78,7 +74,6 @@ private:
     static Serial *mSerial;
     static LIS2DH *mLIS2DH;
     static Timer *mTimestampTimer;
-    static PushButton *mPushButton;
     static BLE *mBLE;
     static MAX14720 *mMAX14720;
     static HspBLE *mhspBLE;
